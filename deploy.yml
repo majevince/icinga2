@@ -1,0 +1,50 @@
+---
+- hosts: master
+  become: True
+  tasks:
+ 
+   - name: Ensure EPEl release is installed 
+     dnf:
+       name: epel-release.noarch
+       state: latest       
+   - name: install the nginx rpm from a remote repo
+     dnf:
+        name: 'https://packages.icinga.com/epel/icinga-rpm-release-8-latest.noarch.rpm'
+        state: present
+   - name: PowerTools repository for EPEL
+     dnf:
+       name: 'dnf-command(config-manager)'
+       state: present
+
+   - name: run command dnf --set-enabled PowerTools
+     command: dnf-command(config-manager --set-enabled powertools
+
+   - name: Installing DNS packages
+     dnf:
+       name: icinga2
+       state: present 
+   - name: Start and Ennable service
+     systemd:
+       state: started
+       name: icinga2
+       enabled: yes
+
+   - name:
+     dnf:
+       name: install nagios-plugins-all
+       state: present
+
+   - name: install Icinga2-selinux
+     dnf:
+       name: icinga2-selinux
+       state: present
+
+   - name: Install Icinga Vim
+     dnf:
+       name: vim-icinga2
+       state: present
+
+   - name: install Icinga2 nano
+     dnf:     
+       name: nano-icinga2
+       state: present
