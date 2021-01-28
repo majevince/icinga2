@@ -11,27 +11,39 @@
      dnf:
         name: 'https://packages.icinga.com/epel/icinga-rpm-release-8-latest.noarch.rpm'
         state: present
-   - name: PowerTools repository for EPEL
+        disable_gpg_check: True
+
+   - name: install core dependency for power tool
      dnf:
-       name: 'dnf-command(config-manager)'
+       name: 
+         - dnf-plugins-core
+         - perl
        state: present
 
    - name: run command dnf --set-enabled PowerTools
-     command: dnf-command(config-manager --set-enabled powertools
+     dnf: 
+       name: 'dnf-command(config-manager)'
+       enablerepo: powertools
+       state: present
 
-   - name: Installing DNS packages
+   - name: Power tools enable repo
+     command: dnf config-manager --set-enabled powertools
+
+
+   - name: Installing icinga2 packages
      dnf:
        name: icinga2
-       state: present 
+       state: present
+
    - name: Start and Ennable service
      systemd:
        state: started
        name: icinga2
        enabled: yes
 
-   - name:
+   - name: Install Nagios-plugins
      dnf:
-       name: install nagios-plugins-all
+       name: nagios-plugins-all
        state: present
 
    - name: install Icinga2-selinux
