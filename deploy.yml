@@ -6,12 +6,13 @@
    - name: Ensure EPEl release is installed 
      dnf:
        name: epel-release.noarch
-       state: latest       
+       state: latest
+
    - name: install the nginx rpm from a remote repo
      dnf:
-        name: 'https://packages.icinga.com/epel/icinga-rpm-release-8-latest.noarch.rpm'
-        state: present
-        disable_gpg_check: True
+       name: 'https://packages.icinga.com/epel/icinga-rpm-release-8-latest.noarch.rpm'
+       state: present
+       disable_gpg_check: True
 
    - name: install core dependency for power tool
      dnf:
@@ -60,3 +61,13 @@
      dnf:     
        name: nano-icinga2
        state: present
+
+   - name: Install configure and start mariaDB services 
+     include: maria_db.yml
+
+  handlers:
+    - name: import icinga schema
+      mysql_db:
+        name: icinga
+        state: import
+        target: /usr/share/icinga2-ido-mysql/schema/mysql.sql
