@@ -5,6 +5,7 @@
       - mariadb-server 
       - python3-PyMySQL.noarch
       - mariadb 
+      - icinga2-ido-mysql
     state: present
 
 - name: Start Maria DB
