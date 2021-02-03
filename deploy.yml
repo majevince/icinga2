@@ -36,11 +36,12 @@
        name: icinga2
        state: present
 
-   - name: Start and Ennable service
+   - name: Start and Enable service
      systemd:
-       state: started
        name: icinga2
+       state: started
        enabled: yes
+       
 
    - name: Install Nagios-plugins
      dnf:
@@ -65,9 +66,30 @@
    - name: Install configure and start mariaDB services 
      include: maria_db.yml
 
+   - name: Update icinga2-ido-msql
+     template:
+       src: templates/ido_msql.j2
+       dest: /etc/icinga2/features-available/ido-mysql.conf
+     tags: ido_mysql
+
+       
+   - name: Enable features icinga2-ido-msql
+     icinga2_feature:
+       name: ido-mysql
+       state: present 
+     notify: restart icinga
+   
+   - name: Setup Apache for icinga2
+     include: apache.yml
+
   handlers:
     - name: import icinga schema
       mysql_db:
         name: icinga
         state: import
         target: /usr/share/icinga2-ido-mysql/schema/mysql.sql
+   
+    - name: restart icinga
+      systemd:
+        name: icinga2
+        state: restarted

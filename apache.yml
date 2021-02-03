@@ -1,0 +1,26 @@
+---
+- name: Install Apache
+  dnf:
+    name: httpd
+    state: present
+- name: start and Enable Apache
+  systemd:
+    name: httpd
+    state: started
+    enabled: yes
+
+- name: Start and Enable firewalld for Icinga2
+  systemd:
+    name: firewalld
+    state: started
+    enabled: yes 
+
+- name: Opening ports 80 and 443 fr Apache
+  firewalld:
+    service: "{{item}}"
+    state: enabled
+    permanent: yes
+    immediate: true 
+  loop:
+    "{{srvs}}"
+  tags: openport 
