@@ -1,0 +1,28 @@
+---
+ 
+- name: Installing PHP repo
+  dnf:
+    name: "http://rpms.remirepo.net/enterprise/remi-release-8.rpm"
+    disable_gpg_check: True
+    state: present
+
+- name: Enable the PHPFM repos
+  dnf:
+    name: "@php:remi-7.4"
+    state: present
+
+
+- name: Installng PHP for Apache
+  dnf:
+    name: 
+      - php
+      - php-fpm
+      - php-gd
+      - php-mysqlnd
+    state: present 
+
+- name: Start and Enable PHP for Icinga
+  systemd:
+    name: php-fpm
+    state: started
+    enabled: yes
