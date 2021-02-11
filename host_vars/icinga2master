@@ -1,1 +1,12 @@
-root_db_password: Macmill44@@ 
+root_db_password: Macmill44@@
+icingauser: icinga
+icinga2db_password: Macmill44@@
+icingadb: icinga
+srvs:
+  - http
+  - ssh
+  - https
+  - ftp
+
+api_user: icinga2web
+api_password: Macmill44@@

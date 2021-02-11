@@ -81,6 +81,28 @@
    
    - name: Setup Apache for icinga2
      include: apache.yml
+  
+   - name: Setup PHP for Apache
+     include: php_fpm.yml
+
+   - name: Setting Up Icinga 2 REST API
+     template:
+       src: templates/api_user.j2
+       dest: /etc/icinga2/conf.d/api-users.conf
+     notify:
+        - setup api user
+        - restart icinga
+     tags: api
+
+
+   - name: Install Icingaweb package
+     dnf: 
+       name: 
+         - icingaweb2
+         - icingacli
+         - icingaweb2-selinux
+       notify: restart apache 
+       state: present 
 
   handlers:
     - name: import icinga schema
@@ -88,8 +110,17 @@
         name: icinga
         state: import
         target: /usr/share/icinga2-ido-mysql/schema/mysql.sql
+
    
     - name: restart icinga
       systemd:
         name: icinga2
         state: restarted
+
+    - name: setup api user 
+      shell: icinga2 api setup
+
+    - name: restart httpd
+      systemd:
+        name: httpd
+        state: restarted  
