@@ -53,6 +53,7 @@
   mysql_db: 
     name: icinga
     state: present
+  notify: import icinga schema
 
 - name: add icingadb schema
   mysql_user:
@@ -61,3 +62,15 @@
     priv: 'icinga.*:ALL'
     state: present  
 
+
+- name: Icinga2web db creation
+  mysql_db:
+    name: icinga2webdb
+    state: present
+
+- name: add icinga2web db user
+  mysql_user:
+    name: icingaweb
+    password: Macmill44@@
+    priv: 'icinga2webdb.*:ALL'
+    state: present

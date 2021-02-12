@@ -1,0 +1,40 @@
+---
+- name: config.ini
+  template:
+    src: templates/config.ini.j2
+    dest: /etc/icingaweb2/config.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0660'
+
+- name: authentication.ini
+  template:
+    src: templates/authentication.ini.j2
+    dest: /etc/icingaweb2/authentication.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0660'
+
+- name: groups.ini
+  template:
+    src: templates/groups.ini.j2
+    dest: /etc/icingaweb2/groups.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0660'
+
+- name: resources.ini
+  template:
+    src: templates/resources.ini.j2
+    dest: /etc/icingaweb2/resources.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0660'
+
+- name: roles.ini
+  template:
+    src: templates/roles.ini.j2
+    dest: /etc/icingaweb2/roles.ini
+    owner: apache
+    group: icingaweb2
+    mode: '0660'

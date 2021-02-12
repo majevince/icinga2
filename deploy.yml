@@ -100,9 +100,10 @@
        name: 
          - icingaweb2
          - icingacli
-         - icingaweb2-selinux
-       notify: restart apache 
+         - icingaweb2-selinux 
        state: present 
+   - name: setup icinga  webpage
+     include: icinga_webpage
 
   handlers:
     - name: import icinga schema
