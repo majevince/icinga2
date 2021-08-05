@@ -1,0 +1,26 @@
+---
+# tasks file for php
+- name: ensure dnf utils are installed
+  dnf:
+    name: dnf-utils
+    state: present
+
+- name: enable php repo
+  dnf:
+    name: 'http://rpms.remirepo.net/enterprise/remi-release-8.rpm'
+    state: present
+
+- name: install php packages
+  dnf:
+    name:
+      - php 
+      - php-fpm
+      - php-gd
+      - php-mysqlnd
+    state: present
+
+- name: enable and start php 
+  systemd:
+    name: php-fpm
+    state: started
+    enabled: yes 

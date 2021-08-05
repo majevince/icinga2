@@ -1,0 +1,9 @@
+---
+# handlers file for icinga
+- name: restart icinga2
+  systemd:
+    name: icinga2
+    state: restarted
+
+- name: setup api user
+  command: icinga2 api setup

@@ -1,0 +1,13 @@
+---
+# handlers file for mariadb
+- name: restart mariadb
+  systemd:
+    name: mariadb
+    state: restarted
+
+- name: import database schema
+  mysql_db:
+    state: import
+    name: icinga
+    target: /usr/share/icinga2-ido-mysql/schema/mysql.sql
+

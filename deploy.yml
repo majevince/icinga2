@@ -1,0 +1,10 @@
+---
+- hosts: controller
+  become: true
+  roles:
+    - icinga
+    - mariadb    
+    - icingaweb
+    - php
+  vars_files:
+    - vars/db_vars.yml

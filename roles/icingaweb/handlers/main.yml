@@ -1,0 +1,14 @@
+---
+# handlers file for icingaweb
+- name: restart icinga2
+  systemd:
+    name: icinga2
+    state: restarted
+
+- name: setup api user
+  command: icinga2 api setup
+
+- name: restart apache
+  systemd:
+    name: httpd
+    state: restarted

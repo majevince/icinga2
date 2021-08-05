@@ -1,0 +1,7 @@
+---
+# defaults file for mariadb
+root_db_pw: root_pw123
+icingauser: icinga
+icinga_db_pw: icinga@123
+icingawebuser: icingaweb2
+icingaweb2_pw: icingaweb2_pw123

@@ -1,0 +1,69 @@
+---
+# tasks file for mariadb
+- name: install mariadb packages
+  dnf:
+    name:
+      - mariadb-server
+      - mariadb
+      - icinga2-ido-mysql
+      - python3-PyMySQL
+    state: present
+
+- name: ensure mariadb server is enabled and started
+  systemd:
+    name: mariadb
+    state: started
+    enabled: yes
+   
+- name: remove mariadb anonymous user
+  mysql_user:
+    name: root
+    password: "{{root_db_pw}}"
+    host: localhost
+  
+
+
+- name: update my.cnf config
+  template:
+    src: templates/my.cnf.j2   
+    dest: /etc/my.cnf
+    mode: 0600
+    owner: root
+  notify: restart mariadb
+
+- name: grant privileges to root user
+  mysql_user:
+    name: root
+    host: "{{item}}"
+    password: "{{root_db_pw}}"
+  with_items:
+    - 127.0.0.1
+    - ::1
+
+- name: create icingadb
+  mysql_db:
+    name: icinga
+    state: present
+
+
+- name: grant all privileges access to icinga user
+  mysql_user:
+    name: icinga
+    password: "{{icinga_db_pw}}"
+    priv: '*icinga.*:ALL'
+    state: present
+  notify: import database schema
+
+- name: create icingawebdb
+  mysql_db:
+    name: icingaweb2
+    state: present
+
+- name: grant all privileges access icingaweb2 user
+  mysql_user:
+    name: icingaweb2
+    password: "{{icingaweb2_pw}}"
+    priv: '*icingaweb2.*:ALL'
+    state: present
+
+
