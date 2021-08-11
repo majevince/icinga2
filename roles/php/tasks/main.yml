@@ -9,6 +9,7 @@
   dnf:
     name: 'http://rpms.remirepo.net/enterprise/remi-release-8.rpm'
     state: present
+    disable_gpg_check: yes
 
 - name: install php packages
   dnf:

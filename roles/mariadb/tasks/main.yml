@@ -15,12 +15,15 @@
     state: started
     enabled: yes
    
-- name: remove mariadb anonymous user
+- name: update mariadb password
   mysql_user:
     name: root
     password: "{{root_db_pw}}"
-    host: localhost
-  
+    login_password: "{{root_db_pw}}"
+    priv: '*.*:ALL'
+    host: "{{item}}"
+  with_items:
+    - localhost
 
 
 - name: update my.cnf config
@@ -29,13 +32,13 @@
     dest: /etc/my.cnf
     mode: 0600
     owner: root
-  notify: restart mariadb
 
 - name: grant privileges to root user
   mysql_user:
     name: root
     host: "{{item}}"
     password: "{{root_db_pw}}"
+    login_password: "{{root_db_pw}}"
   with_items:
     - 127.0.0.1
     - ::1
@@ -43,27 +46,38 @@
 - name: create icingadb
   mysql_db:
     name: icinga
+    login_password: "{{root_db_pw}}"
     state: present
-
+  notify: import database schema
 
 - name: grant all privileges access to icinga user
   mysql_user:
     name: icinga
     password: "{{icinga_db_pw}}"
-    priv: '*icinga.*:ALL'
+    login_password: "{{root_db_pw}}"
+    update_password: on_create
     state: present
   notify: import database schema
+  tags: icinga user
 
 - name: create icingawebdb
   mysql_db:
     name: icingaweb2
+    login_password: "{{root_db_pw}}"
     state: present
-
+ 
 - name: grant all privileges access icingaweb2 user
   mysql_user:
     name: icingaweb2
     password: "{{icingaweb2_pw}}"
-    priv: '*icingaweb2.*:ALL'
+    login_password: "{{root_db_pw}}"
     state: present
 
+- name: grant all privileges access maje user
+  mysql_user:
+    name: maje
+    password: maje44
+    priv: 'icinga.*:ALL'
+    login_password: "{{root_db_pw}}"
+    state: present
 
