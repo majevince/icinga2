@@ -1,0 +1,8 @@
+---
+# tasks file for add-host
+- name: add host to icingaweb
+  template:
+    src: templates/add-host.conf.j2
+    dest: /etc/icinga2/conf.d/add-host.conf
+  notify: restart icinga2
+  tags: update hosts

@@ -6,5 +6,6 @@
     - mariadb    
     - icingaweb
     - php
+    - add-host
   vars_files:
     - vars/db_vars.yml

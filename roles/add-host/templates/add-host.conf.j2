@@ -1,0 +1,7 @@
+object Host "zabbix" {
+  import "generic-host"
+  address = "192.168.56.95"
+  check_command = "http"
+  check_command = "hostalive"
+  check_command = "procs"
+}

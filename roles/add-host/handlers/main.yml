@@ -1,0 +1,6 @@
+---
+# handlers file for add-host
+- name: restart icinga2
+  systemd: 
+    name: icinga2
+    state: restarted
