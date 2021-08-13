@@ -1,7 +1,17 @@
 object Host "zabbix" {
-  import "generic-host"
   address = "192.168.56.95"
-  check_command = "http"
   check_command = "hostalive"
-  check_command = "procs"
+}
+object  Service "ssh" {
+  host_name = "zabbix"
+  check_command = "ssh"
+}
+
+object  Service "http" {
+  host_name = "zabbix"
+  check_command = "http"
+}
+object  Service "users" {
+  host_name = "zabbix"
+  check_command = "users"
 }
