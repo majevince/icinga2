@@ -11,6 +11,11 @@
     state: started
     enabled: yes
 
+- name: Disable SELinux
+  selinux:
+    state: disabled
+
+
 - name: ensure firewalld  is installed
   dnf:
     name: firewalld
@@ -33,6 +38,7 @@
     - 443/tcp
     - 22/tcp
     - 3306/tcp
+    - 5665/tcp
 
 - name: configure default apache page
   template:
@@ -45,6 +51,7 @@
     name:
       - icingaweb2
       - icingacli
+      - icinga2-selinux
       - icingaweb2-selinux
     state: present
 

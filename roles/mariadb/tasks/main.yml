@@ -20,7 +20,6 @@
     name: root
     password: "{{root_db_pw}}"
     login_password: "{{root_db_pw}}"
-    priv: '*.*:ALL'
     host: "{{item}}"
   with_items:
     - localhost
@@ -43,6 +42,13 @@
     - 127.0.0.1
     - ::1
 
+- name: ensure anonymous users are not in the database
+  mysql_user: 
+    name: '' 
+    host_all: yes
+    login_password: "{{root_db_pw}}"
+    state: absent
+
 - name: create icingadb
   mysql_db:
     name: icinga
@@ -55,10 +61,9 @@
     name: icinga
     password: "{{icinga_db_pw}}"
     login_password: "{{root_db_pw}}"
-    update_password: on_create
+    priv: 'icinga.*:ALL'
     state: present
-  notify: import database schema
-  tags: icinga user
+
 
 - name: create icingawebdb
   mysql_db:
@@ -70,14 +75,8 @@
   mysql_user:
     name: icingaweb2
     password: "{{icingaweb2_pw}}"
+    priv: 'icingaweb2.*:ALL'
     login_password: "{{root_db_pw}}"
     state: present
-
-- name: grant all privileges access maje user
-  mysql_user:
-    name: maje
-    password: maje44
-    priv: 'icinga.*:ALL'
-    login_password: "{{root_db_pw}}"
-    state: present
+  notify: restart mariadb
 
